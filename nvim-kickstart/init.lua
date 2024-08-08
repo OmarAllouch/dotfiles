@@ -174,7 +174,20 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- Buffer keymaps
-vim.keymap.set('n', '<leader>x', ':bprevious | bdelete #<CR>', { desc = 'Delete buffer' })
+function CloseBuffer()
+  if vim.fn.buflisted(vim.fn.bufnr '#') == 1 then
+    -- If the buffer exists, switch to it and then close the current buffer
+    vim.cmd 'bnext'
+    vim.cmd 'bdelete #'
+  else
+    -- If the buffer doesn't exist, create a new empty buffer and close the current buffer
+    vim.cmd 'enew'
+    vim.cmd 'bdelete #'
+  end
+end
+vim.api.nvim_set_keymap('n', '<leader>x', '<cmd>lua CloseBuffer()<CR>', { desc = 'Close buffer' })
+vim.keymap.set('n', '<Tab>', ':bn<CR>', { desc = 'Next buffer' })
+vim.keymap.set('n', '<S-Tab>', ':bp<CR>', { desc = 'Previous buffer' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -933,7 +946,7 @@ require('lazy').setup({
   --
   require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
-  require 'kickstart.plugins.lint',
+  -- require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
