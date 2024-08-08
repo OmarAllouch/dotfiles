@@ -175,9 +175,9 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 
 -- Buffer keymaps
 function CloseBuffer()
-  if vim.fn.buflisted(vim.fn.bufnr '#') == 1 then
-    -- If the buffer exists, switch to it and then close the current buffer
-    vim.cmd 'bnext'
+  if vim.fn.bufnr '$' > 1 then
+    -- If there are other open buffers
+    vim.cmd 'bprevious'
     vim.cmd 'bdelete #'
   else
     -- If the buffer doesn't exist, create a new empty buffer and close the current buffer
@@ -708,7 +708,6 @@ require('lazy').setup({
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
-        --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
       },
