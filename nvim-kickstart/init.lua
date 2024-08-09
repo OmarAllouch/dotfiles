@@ -91,7 +91,7 @@ function CloseBuffer()
   else
     -- If the buffer doesn't exist, create a new empty buffer and close the current buffer
     vim.cmd 'enew'
-    vim.cmd 'bdelete #'
+    vim.cmd 'bdelete'
   end
 end
 vim.api.nvim_set_keymap('n', '<leader>x', '<cmd>lua CloseBuffer()<CR>', { desc = 'Close buffer' })
